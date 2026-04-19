@@ -10,6 +10,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.tus.guitarrental.entities.Bass;
@@ -205,6 +208,31 @@ public class StoreController {
 		// Write the lines to the file using NIO.2
 		Files.write(path, lines, StandardCharsets.UTF_8);
 		System.out.println("Report successfully exported to:\n" + path.toAbsolutePath());
+	}
+	
+	/**
+	 * Advanced: Concurrency - ExecutorService
+	 * User Story: Concurrent Batch Rental Returns
+	 */
+	public void processBatchReturns(List<String> serialsToReturn) {
+	    // Create a thread pool with 3 threads
+	    ExecutorService executor = Executors.newFixedThreadPool(3);
+
+	    for (String serial : serialsToReturn) {
+	        executor.submit(() -> {
+	            // Simulate a time-consuming "Return Inspection" process
+	            System.out.println(Thread.currentThread().getName() + " inspecting item: " + serial);
+	            try { Thread.sleep(1000); } catch (InterruptedException e) { }
+	            System.out.println("FINISHED: Item " + serial + " is now back in stock.");
+	        });
+	    }
+
+	    executor.shutdown();
+	    try {
+	        executor.awaitTermination(5, TimeUnit.SECONDS);
+	    } catch (InterruptedException e) {
+	        System.err.println("Batch processing interrupted");
+	    }
 	}
 
 }

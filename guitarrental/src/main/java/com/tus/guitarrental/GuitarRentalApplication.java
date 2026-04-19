@@ -2,6 +2,7 @@ package com.tus.guitarrental;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -44,7 +45,8 @@ public class GuitarRentalApplication {
 				case "e" -> GuitarRentalApplication::testStreams2;
 				case "4" -> GuitarRentalApplication::testSwitchPattern;
 				case "5" -> GuitarRentalApplication::testNioFiles;
-				case "6" -> GuitarRentalApplication::testDateTime;
+				case "6" -> GuitarRentalApplication::testConcurrency;
+				case "8" -> GuitarRentalApplication::testDateTime;
 				case "x" -> {
 					System.out.println(RED + "Goodbye!" + RESET);
 					exit = true;
@@ -256,6 +258,18 @@ public class GuitarRentalApplication {
 			System.out.println();
 		}
 	}
+	
+	public static void testConcurrency() {
+	    System.out.println("\nInventory: " + YELLOW + "Concurrent Batch Returns" + RESET);
+	    System.out.println("-----------------------------------------------------");
+	    
+	    // Sample batch of serial numbers to return concurrently
+	    List<String> returns = List.of("GE001", "BE001", "DA001", "AG001");
+	    
+	    System.out.println("Starting asynchronous inspection for " + returns.size() + " items...");
+	    controller.processBatchReturns(returns);
+	    System.out.println(GREEN + "\nAll batch threads have completed processing." + RESET);
+	}
 
 	public static void testDateTime() {
 		System.out.println("\nTesting date/time API:");
@@ -271,8 +285,8 @@ public class GuitarRentalApplication {
 	}
 
 	public static void printOptions(String choice) {
-		String option0, option1, optionA, option2, optionB, optionC, optionD, optionE, option3, option4, option5, option6;
-		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = RESET;
+		String option0, option1, optionA, option2, optionB, optionC, optionD, optionE, option3, option4, option5, option6, option7, option8;
+		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = RESET;
 		String highlight = YELLOW;
 		if (choice != null) {
 			switch (choice) {
@@ -288,8 +302,10 @@ public class GuitarRentalApplication {
 			case "4" -> option4 = highlight;
 			case "5" -> option5 = highlight;
 			case "6" -> option6 = highlight;
+			case "7" -> option7 = highlight;
+			case "8" -> option8 = highlight;
 			default ->
-				option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = RESET;
+				option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = RESET;
 			}
 		}
 
@@ -305,7 +321,8 @@ public class GuitarRentalApplication {
 		System.out.println(optionE + "  e. Stream Management (findFirst, limit)");
 		System.out.println(option4 + "4. Fee Calculation (Switch Pattern Matching)");
 		System.out.println(option5 + "5. NIO.2 File Export");
-		System.out.println(option6 + "6. Date/Time API (Due Date Calculation)");
+		System.out.println(option6 + "6. Concurrency (Batch Processing with Threads)");
+		System.out.println(option8 + "8. Date/Time API (Due Date Calculation)");
 		System.out.println(RESET + "x. Exit");
 		System.out.print("Choice: ");
 	}
