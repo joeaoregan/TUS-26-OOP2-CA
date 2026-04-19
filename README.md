@@ -30,3 +30,10 @@ Demonstrate ability to apply the learning from the module to build a Java applic
   - Localisation
   - Compact Source Files + Instant Main Methods
   - Flexible Cosntructor Bodies
+
+---
+
+## Guitar Store Management System
+
+The main objective of this application is to demonstrate proficiency in modern Java features, specifically focusing on the transition from fundamental functional programming to the latest enhancements in Java 25.
+
