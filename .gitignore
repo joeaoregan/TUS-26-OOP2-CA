@@ -42,7 +42,7 @@ Thumbs.db
 hs_err_pid*
 replay_pid*
 
-docs/
+project/
 
 # Maven project
 target/

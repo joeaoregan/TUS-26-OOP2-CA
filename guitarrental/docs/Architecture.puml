@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+
+interface Instrument <<sealed>>
+interface Stringed <<sealed>>
+interface Percussion <<sealed>>
+interface Amplification <<sealed>>
+
+Instrument <|-- Stringed
+Instrument <|-- Percussion
+Instrument <|-- Amplification
+
+Stringed <|-- Guitar
+Stringed <|-- Bass
+Percussion <|-- Drums
+Amplification <|-- GuitarAmp
+Amplification <|-- BassAmp
+Amplification <|-- PublicAddressSystem
+
+class Guitar <<record>>
+class Bass <<record>>
+class Drums <<record>>
+class GuitarAmp <<record>>
+class BassAmp <<record>>
+class PublicAddressSystem <<record>>
+@enduml

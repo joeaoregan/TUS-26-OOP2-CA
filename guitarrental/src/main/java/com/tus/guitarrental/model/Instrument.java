@@ -1,6 +1,6 @@
 package com.tus.guitarrental.model;
 
-public sealed interface Instrument permits Guitar, Bass, Drums, Amp {
+public sealed interface Instrument permits Stringed, Percussion, Amplification {
 	String serialNumber();
 
 	String brand();

@@ -37,3 +37,6 @@ Demonstrate ability to apply the learning from the module to build a Java applic
 
 The main objective of this application is to demonstrate proficiency in modern Java features, specifically focusing on the transition from fundamental functional programming to the latest enhancements in Java 25.
 
+![Model Class Diagram](docs/images/ModelClassDiagram.png)
+
+    Figure 1. Model Class Diagram
