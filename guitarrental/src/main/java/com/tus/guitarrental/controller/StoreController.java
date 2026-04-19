@@ -277,4 +277,14 @@ public class StoreController {
 	public long getEquipmentAgeInDays(LocalDate purchaseDate) {
 		return ChronoUnit.DAYS.between(purchaseDate, LocalDate.now());
 	}
+	
+	/**
+	 * Advanced: Localisation
+	 * 
+	 * User Story: Localise User Interface (Currency)
+	 */
+	public String formatCurrency(double amount, java.util.Locale locale) {
+	    java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
+	    return formatter.format(amount);
+	}
 }

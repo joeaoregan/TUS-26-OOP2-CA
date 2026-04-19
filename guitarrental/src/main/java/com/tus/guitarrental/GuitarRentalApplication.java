@@ -48,6 +48,7 @@ public class GuitarRentalApplication {
 				case "4" -> GuitarRentalApplication::testSwitchPattern;
 				case "5" -> GuitarRentalApplication::testNioFiles;
 				case "6" -> GuitarRentalApplication::testConcurrency;
+				case "7" -> GuitarRentalApplication::testLocalisation;
 				case "8" -> GuitarRentalApplication::testDateTime;
 				case "x" -> {
 					System.out.println(RED + "Goodbye!" + RESET);
@@ -314,9 +315,37 @@ public class GuitarRentalApplication {
 		System.out.println("Dublin HQ Time:   " + dublinTime.format(timeFormatter));
 		System.out.println("New York Branch:  " + nyTime.format(timeFormatter));
 	}
-
+	
 	public static void testLocalisation() {
+	    System.out.println("\nInventory: " + YELLOW + "Localisation (Currency Formatting)" + RESET);
+	    System.out.println("-----------------------------------------------------\n");
+	    
+	    double price = 1200.00;
+	    System.out.println("Original Price: €" + price);
+	    
+	    // Use Locale.of for Ireland (Language: en, Country: IE)
+	    System.out.println("Ireland (EUR):  " + controller.formatCurrency(price, java.util.Locale.of("en", "IE")));
+	    System.out.println("USA (USD):      " + controller.formatCurrency(price, java.util.Locale.US));
+	    System.out.println("UK (GBP):       " + controller.formatCurrency(price, java.util.Locale.UK));
+	    System.out.println("Germany (EUR):  " + controller.formatCurrency(price, java.util.Locale.GERMANY));
+	    System.out.println("Spain (EUR):    " + controller.formatCurrency(price, java.util.Locale.of("es", "ES")));
 
+	    // Localised Date
+	    
+	    System.out.println("\nInventory: " + YELLOW + "Localisation (Date/Time Formatting)" + RESET);
+	    System.out.println("-----------------------------------------------------\n");
+	    
+	    DateTimeFormatter longFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", java.util.Locale.of("en", "IE"));
+	    System.out.println("Localised (Ireland): " + LocalDate.now().format(longFormatter));
+
+	    DateTimeFormatter frFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", java.util.Locale.FRANCE);
+	    System.out.println("Localised (France):  " + LocalDate.now().format(frFormatter));
+
+	    DateTimeFormatter grFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", java.util.Locale.GERMANY);
+	    System.out.println("Localised (Germany): " + LocalDate.now().format(grFormatter));
+
+	    DateTimeFormatter esFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", java.util.Locale.of("es", "ES"));
+	    System.out.println("Localised (Spain):   " + LocalDate.now().format(esFormatter));
 	}
 
 	public static void invalidChoice() {
@@ -367,6 +396,7 @@ public class GuitarRentalApplication {
 		System.out.println(option4 + "4. Fee Calculation (Switch Pattern Matching)");
 		System.out.println(option5 + "5. NIO.2 File Export");
 		System.out.println(option6 + "6. Concurrency (Batch Processing with Threads)");
+		System.out.println(option7 + "7. Localisation (Date/Time Formatting by Locale)");
 		System.out.println(option8 + "8. Date/Time API (Due Date Calculation)");
 		System.out.println(RESET + "x. Exit");
 		System.out.print("Choice: ");
