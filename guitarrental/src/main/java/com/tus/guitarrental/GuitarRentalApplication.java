@@ -19,36 +19,39 @@ public class GuitarRentalApplication {
 		Runnable selectedAction = null;
 		String choice = null;
 
-		printLogo();
 		while (!exit) {
 			clearConsole();
+			printLogo();
 			printOptions(choice);
-
 			if (selectedAction != null) {
 				selectedAction.run();
 				System.out.println(GREEN + "\nPress ENTER to return to menu..." + RESET);
 				sc.nextLine();
 				selectedAction = null; // Reset after running
+				choice = "";
+			} else {
+
+				if (sc.hasNextLine()) {
+					choice = sc.nextLine();
+					selectedAction = GuitarRentalApplication::invalidChoice;
+					selectedAction = switch (choice) {
+					case "1" -> GuitarRentalApplication::testSort;
+					case "2" -> GuitarRentalApplication::testLambda;
+					case "3" -> GuitarRentalApplication::testStreams;
+					case "4" -> GuitarRentalApplication::testSwitchPattern;
+					case "5" -> GuitarRentalApplication::testDateTime;
+					case "0" -> {
+						System.out.println(RED + "Goodbye!" + RESET);
+						exit = true;
+						yield null;
+					}
+					default -> {
+//		                invalidChoice();
+						yield GuitarRentalApplication::invalidChoice;
+					}
+					};
+				}
 			}
-			if (sc.hasNextLine()) {
-		        choice = sc.nextLine();
-		        selectedAction = switch (choice) {
-		            case "1" -> GuitarRentalApplication::testSort;
-		            case "2" -> GuitarRentalApplication::testLambda;
-		            case "3" -> GuitarRentalApplication::testStreams;
-		            case "4" -> GuitarRentalApplication::testSwitchPattern;
-		            case "5" -> GuitarRentalApplication::testDateTime;
-		            case "0" -> {
-		                System.out.println(RED + "Goodbye!" + RESET);
-		                exit = true;
-		                yield null;
-		            }
-		            default -> {
-		                invalidChoice();
-		                yield null;
-		            }
-		        };
-		    }
 		}
 		sc.close();
 	}
@@ -84,27 +87,27 @@ public class GuitarRentalApplication {
 //	}
 
 	public static void testSort() {
-		System.out.println("Testing sorting by price:");
+		System.out.println("\nTesting sorting by price:");
 	}
 
 	public static void testLambda() {
-		System.out.println("Testing filtering with lambdas:");
+		System.out.println("\nTesting filtering with lambdas:");
 	}
 
 	public static void testStreams() {
-		System.out.println("Testing streams:");
+		System.out.println("\nTesting streams:");
 	}
 
 	public static void testSwitchPattern() {
-		System.out.println("Testing switch expression with pattern matching:");
+		System.out.println("\nTesting switch expression with pattern matching:");
 	}
 
 	public static void testDateTime() {
-		System.out.println("Testing date/time API:");
+		System.out.println("\nTesting date/time API:");
 	}
-	
+
 	public static void invalidChoice() {
-		System.out.println(RED + "Invalid choice. Please try again." + RESET);
+		System.out.println(RED + "\nInvalid choice. Please try again." + RESET);
 	}
 
 	public static void printOptions(String choice) {
@@ -113,14 +116,16 @@ public class GuitarRentalApplication {
 		String highlight = YELLOW;
 		if (choice != null) {
 			switch (choice) {
-				case "1" -> option1 = highlight;
-				case "2" -> option2 = highlight;
-				case "3" -> option3 = highlight;
-				case "4" -> option4 = highlight;
-				case "5" -> option5 = highlight;
-				default -> option1 = option2 = option3 = option4 = option5 = RESET;
-			};
+			case "1" -> option1 = highlight;
+			case "2" -> option2 = highlight;
+			case "3" -> option3 = highlight;
+			case "4" -> option4 = highlight;
+			case "5" -> option5 = highlight;
+			default -> option1 = option2 = option3 = option4 = option5 = RESET;
+			}
+			;
 		}
+		
 		System.out.println(GREEN + "\nPlease select an option:" + RESET);
 		System.out.println(option1 + "1. Sorting (Comparator.comparing)");
 		System.out.println(option2 + "2. Filtering (Lambdas & Predicates)");
@@ -128,8 +133,8 @@ public class GuitarRentalApplication {
 		System.out.println(option4 + "4. Fee Calculation (Switch Pattern Matching)");
 		System.out.println(option5 + "5. Date/Time API (Due Date Calculation)");
 		System.out.println(RESET + "0. Exit");
-		System.out.print("Choice: ");
-		option1 = option2 = option3 = option4 = option5 = RESET;
+		System.out.print("Choice: " + ((choice != null) ? choice : ""));
+//		option1 = option2 = option3 = option4 = option5 = RESET;
 	}
 
 	public static void printLogo() {
@@ -153,6 +158,9 @@ public class GuitarRentalApplication {
 	public static void clearConsole() {
 		// \033[H moves the cursor to the top-left (Home)
 		// \033[2J clears the entire screen
+		for (int i = 0; i < 50; i++) {
+			System.out.println();
+		}
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
 	}
