@@ -46,3 +46,6 @@ project/
 
 # Maven project
 target/
+
+# Rough work
+Test.java

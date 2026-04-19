@@ -1,6 +1,7 @@
 package com.tus.guitarrental.controller;
 
 import com.tus.guitarrental.entities.*;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -28,15 +29,16 @@ public class StoreController {
 		inventory.add(new PublicAddressSystem("PA001", "Bose", "L1 Compact", 999.00, 100));
 	}
 
+	public List<Instrument> getInventory() {
+		return new ArrayList<>(inventory);
+	}
+	
 	/**
-	 * Fundamentals: Sorting - use of Comparator.comparing() User Story: View Sorted
-	 * Instruments
+	 * Fundamentals: Sorting - use of Comparator.comparing().
+	 * 
+	 * User Story: View Sorted Instruments
 	 */
 	public List<Instrument> getInventorySortedByPrice() {
 		return inventory.stream().sorted(Comparator.comparing(Instrument::baseRentalPrice)).toList();
-	}
-
-	public List<Instrument> getInventory() {
-		return new ArrayList<>(inventory);
 	}
 }
