@@ -230,7 +230,16 @@ public class GuitarRentalApplication {
 	}
 
 	public static void testSwitchPattern() {
-		System.out.println("\nTesting switch expression with pattern matching:");
+	    System.out.println("\nInventory: " + YELLOW + "Rental Fee Calculation" + RESET);
+	    System.out.println("\nSerial | Type                | Base Price | " + GREEN + "Daily Fee" + RESET);
+	    System.out.println("-----------------------------------------------------");
+	    
+	    controller.getInventory().forEach(i -> {
+	        double fee = controller.calculateDailyRentalFee(i);
+	        String type = i.getClass().getSimpleName();
+	        System.out.printf("%-6s | %-19s | €%9.2f | €%8.2f%n", 
+	                i.serialNumber(), type, i.baseRentalPrice(), fee);
+	    });
 	}
 
 	public static void testDateTime() {
