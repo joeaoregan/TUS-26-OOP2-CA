@@ -88,6 +88,11 @@ public class GuitarRentalApplication {
 
 	public static void testSort() {
 		System.out.println("\nTesting sorting by price:");
+//		controller.getInventorySortedByPrice().forEach(System.out::println);
+//		controller.getInventorySortedByPrice().forEach(i -> System.out.printf("%s - $%.2f%n", i.serialNumber(), i.baseRentalPrice()));
+		System.out.println("\nSerial Number | Brand     | Model         | Price");
+		System.out.println("-----------------------------------------------------");
+		controller.getInventorySortedByPrice().forEach(i -> System.out.printf("%-13s | %-9s | %-13s | €%8.2f%n", i.serialNumber(), i.brand(), i.model(), i.baseRentalPrice()));
 	}
 
 	public static void testLambda() {
