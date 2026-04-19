@@ -1,6 +1,8 @@
 package com.tus.guitarrental;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -258,31 +260,63 @@ public class GuitarRentalApplication {
 			System.out.println();
 		}
 	}
-	
+
 	public static void testConcurrency() {
-	    System.out.println("\nInventory: " + YELLOW + "Concurrent Batch Returns" + RESET);
-	    System.out.println("-----------------------------------------------------");
-	    
-	    // Sample batch of serial numbers to return concurrently
-	    List<String> returns = List.of("GE001", "BE001", "DA001", "AG001");
-	    
-	    System.out.println("Starting asynchronous inspection for " + returns.size() + " items...");
-	    controller.processBatchReturns(returns);
-	    System.out.println(GREEN + "\nAll batch threads have completed processing." + RESET);
+		System.out.println("\nInventory: " + YELLOW + "Concurrent Batch Returns" + RESET);
+		System.out.println("-----------------------------------------------------");
+
+		// Sample batch of serial numbers to return concurrently
+		List<String> returns = List.of("GE001", "BE001", "DA001", "AG001");
+
+		System.out.println("Starting asynchronous inspection for " + returns.size() + " items...");
+		controller.processBatchReturns(returns);
+		System.out.println(GREEN + "\nAll batch threads have completed processing." + RESET);
 	}
 
 	public static void testDateTime() {
-	    System.out.println("\nInventory: " + YELLOW + "Date/Time API (Rental Due Date)" + RESET);
-	    System.out.println("-----------------------------------------------------");
-	    int duration = 7; // Example: 1 week rental
-	    String due = controller.calculateDueDate(duration);
-	    System.out.println("\nItem Rented Today: " + LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yy")));
-	    System.out.println("Rental Duration:   " + duration + " days");
-	    System.out.println(GREEN + "Return Due Date:   " + due + RESET);
+		System.out.println("\nInventory: " + YELLOW + "Date/Time API (Rental Due Date)" + RESET);
+		System.out.println("-----------------------------------------------------");
+		int duration = 7; // Example: 1 week rental
+		String due = controller.calculateDueDate(duration);
+		System.out.println("\nItem Rented Today: "
+				+ LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yy")));
+		System.out.println("Rental Duration:   " + duration + " days");
+		System.out.println(GREEN + "Return Due Date:   " + due + RESET);
+
+		System.out.println("\nInventory: " + YELLOW + "Date/Time API (Enhanced Testing)" + RESET);
+		System.out.println("-----------------------------------------------------");
+
+		// 1. Weekly Rental (Demo plusWeeks)
+		String weekly = controller.calculateLongTermDueDate(2, java.time.temporal.ChronoUnit.WEEKS);
+		System.out.println("2-Week Touring Rental Due:   " + GREEN + weekly + RESET);
+
+		// 2. Monthly Rental (Demo plusMonths)
+		String monthly = controller.calculateLongTermDueDate(1, java.time.temporal.ChronoUnit.MONTHS);
+		System.out.println("1-Month Resident Rental Due: " + GREEN + monthly + RESET);
+
+		// 3. Demonstrating Period (Difference between dates)
+		LocalDate start = LocalDate.now();
+		LocalDate end = start.plusMonths(1).plusWeeks(2);
+		java.time.Period period = java.time.Period.between(start, end);
+		System.out.printf("Total Rental Duration: %d months and %d days%n", period.getMonths(), period.getDays());
+
+		// ChronoUnit demo
+		LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
+		long equipmentAge = controller.getEquipmentAgeInDays(purchaseDate);
+		System.out.println("Random Equipment purchased 01/01/2024 Age (Days): " + equipmentAge);
+
+		// Time zones
+		System.out.println(GREEN + "\nGlobal System Sync (Time Zones):" + RESET);
+		ZonedDateTime dublinTime = ZonedDateTime.now(ZoneId.of("Europe/Dublin"));
+		ZonedDateTime nyTime = ZonedDateTime.now(ZoneId.of("America/New_York"));
+
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm (z)");
+		System.out.println("Dublin HQ Time:   " + dublinTime.format(timeFormatter));
+		System.out.println("New York Branch:  " + nyTime.format(timeFormatter));
 	}
-	
+
 	public static void testLocalisation() {
-		
+
 	}
 
 	public static void invalidChoice() {
@@ -295,7 +329,8 @@ public class GuitarRentalApplication {
 	}
 
 	public static void printOptions(String choice) {
-		String option0, option1, optionA, option2, optionB, optionC, optionD, optionE, option3, option4, option5, option6, option7, option8;
+		String option0, option1, optionA, option2, optionB, optionC, optionD, optionE, option3, option4, option5,
+				option6, option7, option8;
 		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = RESET;
 		String highlight = YELLOW;
 		if (choice != null) {

@@ -5,7 +5,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -210,42 +214,67 @@ public class StoreController {
 		Files.write(path, lines, StandardCharsets.UTF_8);
 		System.out.println("Report successfully exported to:\n" + path.toAbsolutePath());
 	}
-	
+
 	/**
-	 * Advanced: Concurrency - ExecutorService
-	 * User Story: Concurrent Batch Rental Returns
+	 * Advanced: Concurrency - ExecutorService User Story: Concurrent Batch Rental
+	 * Returns
 	 */
 	public void processBatchReturns(List<String> serialsToReturn) {
-	    // Create a thread pool with 3 threads
-	    ExecutorService executor = Executors.newFixedThreadPool(3);
+		// Create a thread pool with 3 threads
+		ExecutorService executor = Executors.newFixedThreadPool(3);
 
-	    for (String serial : serialsToReturn) {
-	        executor.submit(() -> {
-	            // Simulate a time-consuming "Return Inspection" process
-	            System.out.println(Thread.currentThread().getName() + " inspecting item: " + serial);
-	            try { Thread.sleep(1000); } catch (InterruptedException e) { }
-	            System.out.println("FINISHED: Item " + serial + " is now back in stock.");
-	        });
-	    }
+		for (String serial : serialsToReturn) {
+			executor.submit(() -> {
+				// Simulate a time-consuming "Return Inspection" process
+				System.out.println(Thread.currentThread().getName() + " inspecting item: " + serial);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+				System.out.println("FINISHED: Item " + serial + " is now back in stock.");
+			});
+		}
 
-	    executor.shutdown();
-	    try {
-	        executor.awaitTermination(5, TimeUnit.SECONDS);
-	    } catch (InterruptedException e) {
-	        System.err.println("Batch processing interrupted");
-	    }
+		executor.shutdown();
+		try {
+			executor.awaitTermination(5, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			System.err.println("Batch processing interrupted");
+		}
 	}
-	
+
 	/**
 	 * Fundamentals: Date/Time API
 	 * 
 	 * User Story: View Rental Return Date
 	 */
 	public String calculateDueDate(int daysToRent) {
-	    LocalDate today = LocalDate.now();
-	    LocalDate dueDate = today.plusDays(daysToRent); 
-	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yy");
-	    return dueDate.format(formatter);
+		LocalDate today = LocalDate.now();
+		LocalDate dueDate = today.plusDays(daysToRent);
+		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yy");
+		return dueDate.format(formatter);
 	}
 
+	/**
+	 * Fundamentals: Date/Time API - demonstrate Period and arithmetic
+	 */
+	public String calculateLongTermDueDate(int amount, java.time.temporal.ChronoUnit unit) {
+		LocalDate today = LocalDate.now();
+		LocalDate dueDate = today.plus(amount, unit);
+		return dueDate.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yy"));
+	}
+
+	public String calculateBusinessDueDate(int daysToRent) {
+		LocalDate dueDate = LocalDate.now().plusDays(daysToRent);
+
+		// If due date is Sunday, adjust to next Monday
+		if (dueDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			dueDate = dueDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+		}
+		return dueDate.format(DateTimeFormatter.ofPattern("dd/MM/yy"));
+	}
+
+	public long getEquipmentAgeInDays(LocalDate purchaseDate) {
+		return ChronoUnit.DAYS.between(purchaseDate, LocalDate.now());
+	}
 }
