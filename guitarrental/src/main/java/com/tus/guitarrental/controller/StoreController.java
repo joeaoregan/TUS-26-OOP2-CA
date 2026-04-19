@@ -38,7 +38,16 @@ public class StoreController {
 	 * 
 	 * User Story: View Sorted Instruments
 	 */
-	public List<Instrument> getInventorySortedByPrice() {
+	public List<Instrument> getInventorySortedByPriceAscending() {
 		return inventory.stream().sorted(Comparator.comparing(Instrument::baseRentalPrice)).toList();
+	}
+	
+	/**
+	 * Fundamentals: Sorting - use of Comparator.comparing().reversed()
+	 */
+	public List<Instrument> getInventorySortedByPriceDescending() {
+	    return inventory.stream()
+	            .sorted(Comparator.comparing(Instrument::baseRentalPrice).reversed())
+	            .toList();
 	}
 }

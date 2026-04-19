@@ -17,30 +17,37 @@ public class GuitarRentalApplication {
 		boolean exit = false;
 		Scanner sc = new Scanner(System.in);
 		Runnable selectedAction = null;
+		selectedAction = GuitarRentalApplication::formatOutput; 
 		String choice = null;
 
 		while (!exit) {
 			clearConsole();
 			printLogo();
-			printOptions(choice);
-			if (selectedAction != null) {
+//			printOptions(choice);
+//			if (selectedAction != null) {
 				selectedAction.run();
-				System.out.println(GREEN + "\nPress ENTER to return to menu..." + RESET);
-				sc.nextLine();
-				selectedAction = null; // Reset after running
+				printOptions(choice);
+//				System.out.println(GREEN + "\nPress ENTER to return to menu..." + RESET);
+//				sc.nextLine();
+//				selectedAction = null; // Reset after running
+				selectedAction = GuitarRentalApplication::formatOutput; // Default to showing inventory after an action
 				choice = "";
-			} else {
+//			} else {
 
+//				printOptions(choice);
+				
 				if (sc.hasNextLine()) {
 					choice = sc.nextLine();
 					selectedAction = GuitarRentalApplication::invalidChoice;
-					selectedAction = switch (choice) {
-					case "1" -> GuitarRentalApplication::testSort;
+					selectedAction = switch (choice.toLowerCase()) {
+					case "0"-> GuitarRentalApplication::formatOutput;
+					case "1" -> GuitarRentalApplication::sortAscending;
+					case "a" -> GuitarRentalApplication::sortDescending;
 					case "2" -> GuitarRentalApplication::testLambda;
 					case "3" -> GuitarRentalApplication::testStreams;
 					case "4" -> GuitarRentalApplication::testSwitchPattern;
 					case "5" -> GuitarRentalApplication::testDateTime;
-					case "0" -> {
+					case "x" -> {
 						System.out.println(RED + "Goodbye!" + RESET);
 						exit = true;
 						yield null;
@@ -51,49 +58,34 @@ public class GuitarRentalApplication {
 					}
 					};
 				}
-			}
+//			}
 		}
 		sc.close();
 	}
-
-//	public static void main(String[] args) {
-//		boolean exit = false;
-//		Scanner sc = new Scanner(System.in);
-//
-//		while (!exit) {
-//			clearConsole();
-//			printLogo();
-//			printOptions();
-//
-//			if (sc.hasNextLine()) {
-//				String choice = sc.nextLine();
-//
-//				switch (choice) {
-//				case "1" -> testSort();
-//				case "2" -> testLambda();
-//				case "3" -> testStreams();
-//				case "4" -> testSwitchPattern();
-//				case "5" -> testDateTime();
-//				case "0" -> {
-//					System.out.println(RED + "Thank you for visiting Joe's Six-String Hub! Goodbye!" + RESET);
-//					exit = true;
-//				}
-//				default -> System.out.println(RED + "Invalid choice. Please try again." + RESET);
-//				}
-//			}
-//		}
-//
-//		sc.close();
-//	}
-
-	public static void testSort() {
-		System.out.println("\nTesting sorting by price:");
-//		controller.getInventorySortedByPrice().forEach(System.out::println);
-//		controller.getInventorySortedByPrice().forEach(i -> System.out.printf("%s - $%.2f%n", i.serialNumber(), i.baseRentalPrice()));
+	
+	public static void formatOutput() {
+		System.out.println("\nInventory: "+YELLOW+"Unsorted"+RESET);
 		System.out.println("\nSerial Number | Brand     | Model         | Price");
 		System.out.println("-----------------------------------------------------");
-		controller.getInventorySortedByPrice().forEach(i -> System.out.printf("%-13s | %-9s | %-13s | €%8.2f%n", i.serialNumber(), i.brand(), i.model(), i.baseRentalPrice()));
+		controller.getInventory().forEach(i -> System.out.printf("%-13s | %-9s | %-13s | €%8.2f%n", i.serialNumber(), i.brand(), i.model(), i.baseRentalPrice()));
 	}
+
+	public static void sortAscending() {
+		System.out.println("\nInventory: "+YELLOW+"Sorted by Price (Ascending)"+RESET);
+//		controller.getInventorySortedByPrice().forEach(System.out::println);
+//		controller.getInventorySortedByPrice().forEach(i -> System.out.printf("%s - $%.2f%n", i.serialNumber(), i.baseRentalPrice()));
+		System.out.println("\nSerial Number | Brand     | Model         | "+GREEN+"Price ^"+RESET);
+		System.out.println("-----------------------------------------------------");
+		controller.getInventorySortedByPriceAscending().forEach(i -> System.out.printf("%-13s | %-9s | %-13s | €%8.2f%n", i.serialNumber(), i.brand(), i.model(), i.baseRentalPrice()));
+	}
+	
+	public static void sortDescending() {
+		System.out.println("\nInventory: "+YELLOW+"Sorted by Price (Descending)"+RESET);
+		System.out.println("\nSerial Number | Brand     | Model         | "+GREEN+"Price v"+RESET);
+		System.out.println("-----------------------------------------------------");
+		controller.getInventorySortedByPriceDescending().forEach(i -> System.out.printf("%-13s | %-9s | %-13s | €%8.2f%n", i.serialNumber(), i.brand(), i.model(), i.baseRentalPrice()));
+	}
+	
 
 	public static void testLambda() {
 		System.out.println("\nTesting filtering with lambdas:");
@@ -112,15 +104,21 @@ public class GuitarRentalApplication {
 	}
 
 	public static void invalidChoice() {
-		System.out.println(RED + "\nInvalid choice. Please try again." + RESET);
+		System.out.println("\nInventory " + RED + "Invalid choice. Please try again." + RESET);
+		System.out.println("\nSerial Number | Brand     | Model         | Price");
+		System.out.println("-----------------------------------------------------");
+		controller.getInventory().forEach(i -> System.out.printf("%-13s | %-9s | %-13s | €%8.2f%n", i.serialNumber(), i.brand(), i.model(), i.baseRentalPrice()));
+	
 	}
 
 	public static void printOptions(String choice) {
-		String option1, option2, option3, option4, option5;
-		option1 = option2 = option3 = option4 = option5 = RESET;
+		String option0, option1, optionA, option2, option3, option4, option5;
+		option0 = option1 = optionA = option2 = option3 = option4 = option5 = RESET;
 		String highlight = YELLOW;
 		if (choice != null) {
 			switch (choice) {
+			case "0" -> option0 = highlight;
+			case "a" -> optionA = highlight;
 			case "1" -> option1 = highlight;
 			case "2" -> option2 = highlight;
 			case "3" -> option3 = highlight;
@@ -128,17 +126,19 @@ public class GuitarRentalApplication {
 			case "5" -> option5 = highlight;
 			default -> option1 = option2 = option3 = option4 = option5 = RESET;
 			}
-			;
 		}
 		
 		System.out.println(GREEN + "\nPlease select an option:" + RESET);
-		System.out.println(option1 + "1. Sorting (Comparator.comparing)");
+		System.out.println(option0 + "0. View Inventory (Unsorted)");
+		System.out.println(option1 + "1. Sorting (Price Ascending)");
+		System.out.println(optionA + "a. Sorting (Price Descending)");
 		System.out.println(option2 + "2. Filtering (Lambdas & Predicates)");
 		System.out.println(option3 + "3. Stream Analytics (min, max, count, collectors)");
 		System.out.println(option4 + "4. Fee Calculation (Switch Pattern Matching)");
 		System.out.println(option5 + "5. Date/Time API (Due Date Calculation)");
-		System.out.println(RESET + "0. Exit");
-		System.out.print("Choice: " + ((choice != null) ? choice : ""));
+		System.out.println(RESET + "x. Exit");
+//		System.out.print("Choice: " + ((choice != null) ? choice : ""));
+		System.out.print("Choice: ");
 //		option1 = option2 = option3 = option4 = option5 = RESET;
 	}
 
