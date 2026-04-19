@@ -1,4 +1,4 @@
-package com.tus.guitarrental.model;
+package com.tus.guitarrental.entities;
 
 import java.time.LocalDate;
 

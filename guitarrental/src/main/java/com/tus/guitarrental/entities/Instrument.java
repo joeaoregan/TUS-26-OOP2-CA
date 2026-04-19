@@ -1,4 +1,4 @@
-package com.tus.guitarrental.model;
+package com.tus.guitarrental.entities;
 
 public sealed interface Instrument permits Stringed, Percussion, Amplification {
 	String serialNumber();
