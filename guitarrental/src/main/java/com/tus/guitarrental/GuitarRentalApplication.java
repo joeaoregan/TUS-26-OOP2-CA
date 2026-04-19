@@ -131,7 +131,7 @@ public class GuitarRentalApplication {
 		System.out.println(GREEN + "\nPlease select an option:" + RESET);
 		System.out.println(option0 + "0. View Inventory (Unsorted)");
 		System.out.println(option1 + "1. Sorting (Price Ascending)");
-		System.out.println(optionA + "a. Sorting (Price Descending)");
+		System.out.println(optionA + "  a. Sorting (Price Descending)");
 		System.out.println(option2 + "2. Filtering (Lambdas & Predicates)");
 		System.out.println(option3 + "3. Stream Analytics (min, max, count, collectors)");
 		System.out.println(option4 + "4. Fee Calculation (Switch Pattern Matching)");
@@ -143,20 +143,20 @@ public class GuitarRentalApplication {
 	}
 
 	public static void printLogo() {
-		System.out.println(RED + "      ________      .__  __\r\n" + "     /  _____/ __ __|__|/  |______ _______\r\n"
-				+ "    /   \\  ___|  |  \\  \\   __\\__  \\\\_  __ \\\r\n"
-				+ "    \\    \\_\\  \\  |  /  ||  |  / __ \\|  | \\/\r\n"
-				+ "     \\______  /____/|__||__| (____  /__|\r\n" + BLUE + "__________  " + RED + "\\/" + BLUE
+		System.out.println(RED + "        ________      .__  __\r\n" + "       /  _____/ __ __|__|/  |______ _______\r\n"
+				+ "      /   \\  ___|  |  \\  \\   __\\__  \\\\_  __ \\\r\n"
+				+ "      \\    \\_\\  \\  |  /  ||  |  / __ \\|  | \\/\r\n"
+				+ "       \\______  /____/|__||__| (____  /__|\r\n" + BLUE + "  __________  " + RED + "\\/" + BLUE
 				+ "           __       " + RED + "\\/" + BLUE + ".__\r\n" + BLUE
-				+ "\\______   \\ ____   _____/  |______  |  |   ______\r\n"
-				+ " |       _// __ \\ /    \\   __\\__  \\ |  |  /  ___/\r\n"
-				+ " |    |   \\  ___/|   |  \\  |  / __ \\|  |__\\___ \\\r\n"
-				+ " |____|_  /\\___  >___|  /__| (____  /____/____  >\r\n"
-				+ "        \\/     \\/     \\/          \\/          \\/ ");
+				+ "  \\______   \\ ____   _____/  |______  |  |   ______\r\n"
+				+ "   |       _// __ \\ /    \\   __\\__  \\ |  |  /  ___/\r\n"
+				+ "   |    |   \\  ___/|   |  \\  |  / __ \\|  |__\\___ \\\r\n"
+				+ "   |____|_  /\\___  >___|  /__| (____  /____/____  >\r\n"
+				+ "          \\/     \\/     \\/          \\/          \\/ ");
 
-		System.out.println(RED + "=================================================");
-		System.out.println(GREEN + "       Joe's Six-String Hub: Guitar Rental   " + RED);
-		System.out.println("=================================================" + RESET);
+		System.out.println(RED + "=====================================================");
+		System.out.println(GREEN + "         Joe's Six-String Hub: Guitar Rental   " + RED);
+		System.out.println("=====================================================" + RESET);
 //		System.out.println("Java Version: " + System.getProperty("java.version"));
 	}
 
