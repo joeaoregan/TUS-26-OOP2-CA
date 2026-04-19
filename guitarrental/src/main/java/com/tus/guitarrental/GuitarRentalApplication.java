@@ -9,15 +9,11 @@ import com.tus.guitarrental.controller.StoreController;
 import com.tus.guitarrental.entities.Guitar;
 import com.tus.guitarrental.entities.Instrument;
 
+import static com.tus.guitarrental.Logo.*;
+
 public class GuitarRentalApplication {
 
 	private final static StoreController controller = new StoreController();
-
-	private final static String RED = "\u001B[31m";
-	private final static String BLUE = "\u001B[34m";
-	private final static String GREEN = "\u001B[32m";
-	private final static String YELLOW = "\u001B[33m";
-	private final static String RESET = "\u001B[0m";
 
 	public static void main(String[] args) {
 		boolean exit = false;
@@ -29,18 +25,11 @@ public class GuitarRentalApplication {
 		while (!exit) {
 			clearConsole();
 			printLogo();
-//			printOptions(choice);
-//			if (selectedAction != null) {
 			selectedAction.run();
 			printOptions(choice);
-//				System.out.println(GREEN + "\nPress ENTER to return to menu..." + RESET);
-//				sc.nextLine();
-//				selectedAction = null; // Reset after running
 			selectedAction = GuitarRentalApplication::formatOutput; // Default to showing inventory after an action
 			choice = "";
-//			} else {
 
-//				printOptions(choice);
 			if (sc.hasNextLine()) {
 				choice = sc.nextLine();
 				selectedAction = switch (choice.toLowerCase()) {
@@ -61,12 +50,10 @@ public class GuitarRentalApplication {
 					yield null;
 				}
 				default -> {
-//		                invalidChoice();
 					yield GuitarRentalApplication::invalidChoice;
 				}
 				};
 			}
-//			}
 		}
 		sc.close();
 	}
@@ -238,9 +225,8 @@ public class GuitarRentalApplication {
 		System.out.println(GREEN + "\nDiscount Report (Serial | 20% Off Price):" + RESET);
 		System.out.println("-----------------------------------------------------");
 		Map<String, Double> discountMap = controller.getDiscountedPriceMap();
-		discountMap.forEach((serial, discountedPrice) -> // System.out.printf("Serial: %-10s | Special Offer: €%8.2f%n",
-															// serial, discountedPrice));
-		System.out.printf("Serial: %-14s | Summer Sale Price: €%8.2f%n", serial, discountedPrice));
+		discountMap.forEach((serial, discountedPrice) -> System.out
+				.printf("Serial: %-14s | Summer Sale Price: €%8.2f%n", serial, discountedPrice));
 	}
 
 	public static void testSwitchPattern() {
@@ -295,37 +281,6 @@ public class GuitarRentalApplication {
 		System.out.println(option4 + "4. Fee Calculation (Switch Pattern Matching)");
 		System.out.println(option5 + "5. Date/Time API (Due Date Calculation)");
 		System.out.println(RESET + "x. Exit");
-//		System.out.print("Choice: " + ((choice != null) ? choice : ""));
 		System.out.print("Choice: ");
-//		option1 = option2 = option3 = option4 = option5 = RESET;
-	}
-
-	public static void printLogo() {
-		System.out
-				.println(RED + "        ________      .__  __\r\n" + "       /  _____/ __ __|__|/  |______ _______\r\n"
-						+ "      /   \\  ___|  |  \\  \\   __\\__  \\\\_  __ \\\r\n"
-						+ "      \\    \\_\\  \\  |  /  ||  |  / __ \\|  | \\/\r\n"
-						+ "       \\______  /____/|__||__| (____  /__|\r\n" + BLUE + "  __________  " + RED + "\\/"
-						+ BLUE + "           __       " + RED + "\\/" + BLUE + ".__\r\n" + BLUE
-						+ "  \\______   \\ ____   _____/  |______  |  |   ______\r\n"
-						+ "   |       _// __ \\ /    \\   __\\__  \\ |  |  /  ___/\r\n"
-						+ "   |    |   \\  ___/|   |  \\  |  / __ \\|  |__\\___ \\\r\n"
-						+ "   |____|_  /\\___  >___|  /__| (____  /____/____  >\r\n"
-						+ "          \\/     \\/     \\/          \\/          \\/ ");
-
-		System.out.println(RED + "=====================================================");
-		System.out.println(GREEN + "         Joe's Six-String Hub: Guitar Rental   " + RED);
-		System.out.println("=====================================================" + RESET);
-//		System.out.println("Java Version: " + System.getProperty("java.version"));
-	}
-
-	public static void clearConsole() {
-		// \033[H moves the cursor to the top-left (Home)
-		// \033[2J clears the entire screen
-		for (int i = 0; i < 50; i++) {
-			System.out.println();
-		}
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
 	}
 }
