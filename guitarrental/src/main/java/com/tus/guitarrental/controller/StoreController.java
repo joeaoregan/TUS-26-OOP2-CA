@@ -13,6 +13,10 @@ public class StoreController {
 		populateInventory();
 	}
 
+	public int getInventorySize() {
+		return inventory.size();
+	}
+
 	private void populateInventory() {
 		inventory.add(new Guitar("GE001", "Fender", "Stratocaster", 1200.00, 6, true));
 		inventory.add(new Guitar("GE002", "Fender", "Telecaster", 1100.00, 6, true));
@@ -32,7 +36,7 @@ public class StoreController {
 	public List<Instrument> getInventory() {
 		return new ArrayList<>(inventory);
 	}
-	
+
 	/**
 	 * Fundamentals: Sorting - use of Comparator.comparing().
 	 * 
@@ -41,13 +45,59 @@ public class StoreController {
 	public List<Instrument> getInventorySortedByPriceAscending() {
 		return inventory.stream().sorted(Comparator.comparing(Instrument::baseRentalPrice)).toList();
 	}
-	
+
 	/**
 	 * Fundamentals: Sorting - use of Comparator.comparing().reversed()
 	 */
 	public List<Instrument> getInventorySortedByPriceDescending() {
-	    return inventory.stream()
-	            .sorted(Comparator.comparing(Instrument::baseRentalPrice).reversed())
-	            .toList();
+		return inventory.stream().sorted(Comparator.comparing(Instrument::baseRentalPrice).reversed()).toList();
 	}
+
+	/**
+	 * Fundamentals: Lambdas (Predicate) and Streams (filter).
+	 * 
+	 * User Story: Custom Filter Gear List
+	 */
+	public List<Instrument> filterInventory(java.util.function.Predicate<Instrument> criteria) {
+		return inventory.stream().filter(criteria).toList();
+	}
+
+	public long filterInventoryCount(java.util.function.Predicate<Instrument> criteria) {
+		return inventory.stream().filter(criteria).count();
+	}
+
+	/**
+	 * Fundamentals: Lambdas - Function<T, R>
+	 * 
+	 * Takes a price and applies a transformation (like VAT).
+	 */
+	public double calculatePriceTransformation(Instrument i, java.util.function.Function<Double, Double> logic) {
+		return logic.apply(i.baseRentalPrice());
+	}
+
+	public void processInventory(java.util.function.Consumer<Instrument> action) {
+		inventory.forEach(action);
+	}
+
+	/**
+	 * Fundamentals: Lambdas (Consumer, Supplier)
+	 */
+	public void processGear(java.util.function.Consumer<Instrument> action,
+			java.util.function.Supplier<Instrument> defaultGear) {
+		if (inventory.isEmpty()) {
+			action.accept(defaultGear.get()); // Use Supplier if empty
+		} else {
+			inventory.forEach(action); // Use Consumer for existing items
+		}
+	}
+
+	/**
+	 * Fundamentals: Supplier If an instrument is not in stock, use the Supplier to
+	 * "order" it.
+	 */
+	public Instrument getOrOrderInstrument(String serial, java.util.function.Supplier<Instrument> orderFactory) {
+		return inventory.stream().filter(i -> i.serialNumber().equalsIgnoreCase(serial)).findFirst()
+				.orElseGet(orderFactory); // orElseGet takes a Supplier
+	}
+
 }
