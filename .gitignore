@@ -1,5 +1,24 @@
 # Compiled class file
+**/target/
 *.class
+
+# IDE - IntelliJ
+.idea/
+*.iml
+
+# IDE - NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+
+# IDE - Eclipse/STS
+.settings/
+bin/
+
+# OS generated files
+.DS_Store
+Thumbs.db
 
 # Log file
 *.log
@@ -26,4 +45,4 @@ replay_pid*
 docs/
 
 # Maven project
-.settings/
+target/
