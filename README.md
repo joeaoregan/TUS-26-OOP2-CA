@@ -37,6 +37,46 @@ Demonstrate ability to apply the learning from the module to build a Java applic
 
 The main objective of this application is to demonstrate proficiency in modern Java features, specifically focusing on the transition from fundamental functional programming to the latest enhancements in Java 25.
 
+---
+
+### Entity Class Diagram
+
 ![Model Class Diagram](docs/images/ModelClassDiagram.png)
 
-    Figure 1. Model Class Diagram
+    Figure 1. Entity Class Diagram
+
+---
+
+## Advanced Features
+
+### Concurrency
+
+The application utilizes the Java Concurrency API (via ExecutorService) to demonstrate high-performance asynchronous processing.
+
+- **Logic**: Instead of processing rental returns sequentially (one by one), the system handles them in parallel using a Fixed Thread Pool.
+- **ExecutorService**: Manages a pool of three worker threads, decoupling task submission from execution. This ensures the application remains responsive while "heavy" tasks (simulated item inspections) run in the background.
+- **Thread Safety**: Demonstrates proper lifecycle management of threads, including controlled shutdown() and awaitTermination() protocols to ensure all batch tasks complete before the program proceeds.
+
+---
+
+### NIO.2
+
+#### Inventory Report Example
+
+Sample inventory report generated using NIO.2.
+
+```text title="inventory_report.txt"
+Serial: GE001 | Brand: Fender   | Model: Stratocaster | Price: €1200.00
+Serial: GE002 | Brand: Fender   | Model: Telecaster   | Price: €1100.00
+Serial: GE003 | Brand: Fender   | Model: Tom Morello  | Price: €1899.00
+Serial: GE004 | Brand: Gibson   | Model: Les Paul     | Price: €2500.00
+Serial: GE005 | Brand: Gibson   | Model: SG           | Price: €1800.00
+Serial: BE001 | Brand: Washburn | Model: XB400        | Price: €450.00
+Serial: BE002 | Brand: Washburn | Model: XB105        | Price: €389.00
+Serial: DA001 | Brand: Pearl    | Model: Export       | Price: €900.00
+Serial: DE002 | Brand: Alesis   | Model: Debut        | Price: €279.00
+Serial: AG001 | Brand: Marshall | Model: JVM410H      | Price: €1500.00
+Serial: AG002 | Brand: Peavey   | Model: Bandit       | Price: €299.00
+Serial: AB001 | Brand: Peavey   | Model: TKO          | Price: €479.00
+Serial: PA001 | Brand: Bose     | Model: L1 Compact   | Price: €999.00
+```

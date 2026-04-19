@@ -272,7 +272,17 @@ public class GuitarRentalApplication {
 	}
 
 	public static void testDateTime() {
-		System.out.println("\nTesting date/time API:");
+	    System.out.println("\nInventory: " + YELLOW + "Date/Time API (Rental Due Date)" + RESET);
+	    System.out.println("-----------------------------------------------------");
+	    int duration = 7; // Example: 1 week rental
+	    String due = controller.calculateDueDate(duration);
+	    System.out.println("\nItem Rented Today: " + LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yy")));
+	    System.out.println("Rental Duration:   " + duration + " days");
+	    System.out.println(GREEN + "Return Due Date:   " + due + RESET);
+	}
+	
+	public static void testLocalisation() {
+		
 	}
 
 	public static void invalidChoice() {

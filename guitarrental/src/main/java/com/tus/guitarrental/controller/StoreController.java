@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -233,6 +234,18 @@ public class StoreController {
 	    } catch (InterruptedException e) {
 	        System.err.println("Batch processing interrupted");
 	    }
+	}
+	
+	/**
+	 * Fundamentals: Date/Time API
+	 * 
+	 * User Story: View Rental Return Date
+	 */
+	public String calculateDueDate(int daysToRent) {
+	    LocalDate today = LocalDate.now();
+	    LocalDate dueDate = today.plusDays(daysToRent); 
+	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yy");
+	    return dueDate.format(formatter);
 	}
 
 }
