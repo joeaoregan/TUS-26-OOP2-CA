@@ -2,6 +2,7 @@ package com.tus.guitarrental;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Scanner;
 
 import com.tus.guitarrental.controller.StoreController;
@@ -42,7 +43,6 @@ public class GuitarRentalApplication {
 //				printOptions(choice);
 			if (sc.hasNextLine()) {
 				choice = sc.nextLine();
-				selectedAction = GuitarRentalApplication::invalidChoice;
 				selectedAction = switch (choice.toLowerCase()) {
 				case "0" -> GuitarRentalApplication::formatOutput;
 				case "1" -> GuitarRentalApplication::sortAscending;
@@ -52,6 +52,7 @@ public class GuitarRentalApplication {
 				case "c" -> GuitarRentalApplication::lambdaConsumer;
 				case "d" -> GuitarRentalApplication::lambdaSupplier;
 				case "3" -> GuitarRentalApplication::testStreams;
+				case "e" -> GuitarRentalApplication::testStreams2;
 				case "4" -> GuitarRentalApplication::testSwitchPattern;
 				case "5" -> GuitarRentalApplication::testDateTime;
 				case "x" -> {
@@ -98,6 +99,9 @@ public class GuitarRentalApplication {
 						i.model(), i.baseRentalPrice()));
 	}
 
+	// Demonstrates the Predicate<T> interface:
+	// Takes an Instrument, returns a boolean to filter the inventory by brand e.g.
+	// 'Fender'
 	public static void lambdaPredicate() {
 		System.out.println("\nInventory: " + YELLOW + "Filter by Brand (Fender)");
 		System.out.println("\nSerial Number | " + GREEN + "Brand" + RESET + "     | Model         | Price");
@@ -112,6 +116,9 @@ public class GuitarRentalApplication {
 		}
 	}
 
+	// Demonstrates the Function<T, R> interface:
+	// Takes a price (Double), changes it into a new value (Double), applies a 20%
+	// VAT calculation
 	public static void lambdaFunction() {
 //		double priceWithVat = controller.calculatePriceTransformation(item, price -> price * 1.2);
 		System.out.println("\nInventory: " + YELLOW + "Apply VAT" + RESET);
@@ -123,6 +130,9 @@ public class GuitarRentalApplication {
 						controller.calculatePriceTransformation(i, price -> price * 0.2), RESET));
 	}
 
+	// Demonstrates the Consumer<T> interface:
+	// Performs an operation on each Instrument
+	// (logging/processing) without returning a result
 	public static void lambdaConsumer() {
 		LocalDate today = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
@@ -135,6 +145,9 @@ public class GuitarRentalApplication {
 				.println("LOG: Initialising safety checks for " + i.serialNumber() + " on " + formattedDate));
 	}
 
+	// Demonstrates the Supplier<T> interface:
+	// Acts as a factory to lazily provide a 'Rare Order' Instrument
+	// when a searched item isn't found
 	public static void lambdaSupplier() {
 		System.out.println("\nInventory: " + YELLOW + "On-Demand Ordering (Lambdas & Suppliers)" + RESET);
 		System.out.println("Searching for rare Serial: 'RARE01'...");
@@ -169,7 +182,65 @@ public class GuitarRentalApplication {
 //				+ "\nNote: If inventory is empty, Supplier creates a 'Generic' guitar." + RESET);
 //	}
 	public static void testStreams() {
-		System.out.println("\nTesting streams:");
+		System.out.println(BLUE + "\nInventory: " + YELLOW + "Stream Analytics & Management Reports" + RESET);
+		System.out.println("-----------------------------------------------------");
+
+		// Count (Done in your app already, but good to show here)
+		System.out.println("Total Assets:\t" + controller.getInventorySize());
+
+		// Min / Max
+		controller.getCheapestItem().ifPresent(
+				i -> System.out.printf("Budget Option:  %s (%s) - €%.2f%n", i.brand(), i.model(), i.baseRentalPrice()));
+
+		controller.getDearestItem().ifPresent(
+				i -> System.out.printf("Premium Option: %s (%s) - €%.2f%n", i.brand(), i.model(), i.baseRentalPrice()));
+
+		// anyMatch
+		boolean deals = controller.hasItemsUnder(300.00);
+		System.out.println("Are there deals under €300? " + (deals ? "Yes!" : "No."));
+
+		// Collectors.groupingBy
+		System.out.println(GREEN + "\nStock Count by Brand:" + RESET);
+		controller.getInventoryByBrand().forEach((brand, list) -> // System.out.printf(" - %-13s" + brand + ": " +
+																	// list.size() + " items"));
+		System.out.printf(" - %-10s: %d items%n", brand, list.size()));
+
+		// Collectors.partitioningBy
+		var electricSplit = controller.partitionByElectric();
+		System.out.println(GREEN + "\nElectric vs Acoustic Partitioning:" + RESET);
+		System.out.println(" - Electric/Active Count:  " + electricSplit.get(true).size());
+		System.out.println(" - Acoustic/Passive Count: " + electricSplit.get(false).size());
+	}
+
+	public static void testStreams2() {
+		System.out.println(BLUE + "\nInventory: " + YELLOW + "Advanced Stream Analytics" + RESET);
+		System.out.println("-----------------------------------------------------");
+
+		// findFirst demo
+		controller.getFirstByBrand("Fender").ifPresent(
+				i -> System.out.println("First Fender found:    " + i.model() + " (" + i.serialNumber() + ")"));
+
+		// findAny demo
+		controller.getAnyBudgetOption(500.0)
+				.ifPresent(i -> System.out.println("Suggested Budget Item: " + i.brand() + " " + i.model()));
+
+		// allMatch demo
+		boolean verified = controller.isInventoryVerified();
+		System.out.println("System Integrity Check (All Serials Present):    "
+				+ (verified ? GREEN + "PASS" : RED + "FAIL") + RESET);
+
+		// noneMatch demo
+		boolean noFreebies = controller.hasNoFreeRentalItems();
+		System.out.println("Insurance Check (No €0 rentals):                 "
+				+ (noFreebies ? GREEN + "PASS" : RED + "FAIL") + RESET);
+
+		// Collectors.toMap demo
+		System.out.println(GREEN + "\nDiscount Report (Serial | 20% Off Price):" + RESET);
+		System.out.println("-----------------------------------------------------");
+		Map<String, Double> discountMap = controller.getDiscountedPriceMap();
+		discountMap.forEach((serial, discountedPrice) -> // System.out.printf("Serial: %-10s | Special Offer: €%8.2f%n",
+															// serial, discountedPrice));
+		System.out.printf("Serial: %-14s | Summer Sale Price: €%8.2f%n", serial, discountedPrice));
 	}
 
 	public static void testSwitchPattern() {
@@ -190,8 +261,8 @@ public class GuitarRentalApplication {
 	}
 
 	public static void printOptions(String choice) {
-		String option0, option1, optionA, option2, optionB, optionC, optionD, option3, option4, option5;
-		option0 = option1 = optionA = option2 = optionB = optionC = optionD = option3 = option4 = option5 = RESET;
+		String option0, option1, optionA, option2, optionB, optionC, optionD, optionE, option3, option4, option5;
+		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = RESET;
 		String highlight = YELLOW;
 		if (choice != null) {
 			switch (choice) {
@@ -203,10 +274,11 @@ public class GuitarRentalApplication {
 			case "c" -> optionC = highlight;
 			case "d" -> optionD = highlight;
 			case "3" -> option3 = highlight;
+			case "e" -> optionE = highlight;
 			case "4" -> option4 = highlight;
 			case "5" -> option5 = highlight;
 			default ->
-				option0 = option1 = optionA = option2 = optionB = optionC = optionD = option3 = option4 = option5 = RESET;
+				option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = RESET;
 			}
 		}
 
@@ -218,7 +290,8 @@ public class GuitarRentalApplication {
 		System.out.println(optionB + "  b. Mapping (Lambdas & Functions)");
 		System.out.println(optionC + "  c. Processing (Lambdas & Consumers)");
 		System.out.println(optionD + "  d. Factory Fallback (Lambdas & Suppliers)");
-		System.out.println(option3 + "3. Stream Analytics (min, max, count, collectors)");
+		System.out.println(option3 + "3. Stream Analytics (min, max, anyMatch, collectors)");
+		System.out.println(optionE + "  e. Stream Management (findFirst, limit)");
 		System.out.println(option4 + "4. Fee Calculation (Switch Pattern Matching)");
 		System.out.println(option5 + "5. Date/Time API (Due Date Calculation)");
 		System.out.println(RESET + "x. Exit");
