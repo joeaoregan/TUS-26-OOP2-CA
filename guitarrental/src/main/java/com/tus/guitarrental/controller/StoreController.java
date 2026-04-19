@@ -1,5 +1,10 @@
 package com.tus.guitarrental.controller;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -180,6 +185,26 @@ public class StoreController {
 		case Percussion p -> p.baseRentalPrice() * 0.012; // Drum specific rate
 		default -> instrument.baseRentalPrice() * 0.01;
 		};
+	}
+
+	/**
+	 * Advanced: NIO.2 - Working with Paths and Files
+	 * 
+	 * User Story: Manage External Assets and Data Files
+	 */
+	public void exportInventoryReport() throws IOException {
+		// Create a path for the report in root of the project
+		Path path = Paths.get("inventory_report.txt");
+
+		// Changes inventory into a list of strings for the file
+		List<String> lines = inventory.stream()
+				.map(i -> String.format("Serial: %s | Brand: %-8s | Model: %-12s | Price: €%.2f", i.serialNumber(),
+						i.brand(), i.model(), i.baseRentalPrice()))
+				.toList();
+
+		// Write the lines to the file using NIO.2
+		Files.write(path, lines, StandardCharsets.UTF_8);
+		System.out.println("Report successfully exported to:\n" + path.toAbsolutePath());
 	}
 
 }

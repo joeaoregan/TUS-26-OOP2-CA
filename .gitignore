@@ -49,3 +49,6 @@ target/
 
 # Rough work
 Test.java
+
+# NIO.2
+inventory_report.txt

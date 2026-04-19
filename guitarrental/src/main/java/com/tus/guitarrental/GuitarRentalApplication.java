@@ -43,7 +43,8 @@ public class GuitarRentalApplication {
 				case "3" -> GuitarRentalApplication::testStreams;
 				case "e" -> GuitarRentalApplication::testStreams2;
 				case "4" -> GuitarRentalApplication::testSwitchPattern;
-				case "5" -> GuitarRentalApplication::testDateTime;
+				case "5" -> GuitarRentalApplication::testNioFiles;
+				case "6" -> GuitarRentalApplication::testDateTime;
 				case "x" -> {
 					System.out.println(RED + "Goodbye!" + RESET);
 					exit = true;
@@ -230,16 +231,30 @@ public class GuitarRentalApplication {
 	}
 
 	public static void testSwitchPattern() {
-	    System.out.println("\nInventory: " + YELLOW + "Rental Fee Calculation" + RESET);
-	    System.out.println("\nSerial | Type                | Base Price | " + GREEN + "Daily Fee" + RESET);
-	    System.out.println("-----------------------------------------------------");
-	    
-	    controller.getInventory().forEach(i -> {
-	        double fee = controller.calculateDailyRentalFee(i);
-	        String type = i.getClass().getSimpleName();
-	        System.out.printf("%-6s | %-19s | €%9.2f | €%8.2f%n", 
-	                i.serialNumber(), type, i.baseRentalPrice(), fee);
-	    });
+		System.out.println("\nInventory: " + YELLOW + "Rental Fee Calculation" + RESET);
+		System.out.println("\nSerial | Type                | Base Price | " + GREEN + "Daily Fee" + RESET);
+		System.out.println("-----------------------------------------------------");
+
+		controller.getInventory().forEach(i -> {
+			double fee = controller.calculateDailyRentalFee(i);
+			String type = i.getClass().getSimpleName();
+			System.out.printf("%-6s | %-19s | €%9.2f | €%8.2f%n", i.serialNumber(), type, i.baseRentalPrice(), fee);
+		});
+	}
+
+	public static void testNioFiles() {
+		System.out.println("\nInventory: " + YELLOW + "NIO.2 File Export" + RESET);
+		System.out.println("-----------------------------------------------------\n");
+		try {
+			controller.exportInventoryReport();
+			System.out.println(GREEN + "\nSUCCESS:\nCheck project root for 'inventory_report.txt'" + RESET);
+		} catch (java.io.IOException e) {
+			System.out.println(RED + "ERROR: Failed to write file: " + e.getMessage() + RESET);
+		}
+
+		for (int i = 0; i < 9; i++) {
+			System.out.println();
+		}
 	}
 
 	public static void testDateTime() {
@@ -256,8 +271,8 @@ public class GuitarRentalApplication {
 	}
 
 	public static void printOptions(String choice) {
-		String option0, option1, optionA, option2, optionB, optionC, optionD, optionE, option3, option4, option5;
-		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = RESET;
+		String option0, option1, optionA, option2, optionB, optionC, optionD, optionE, option3, option4, option5, option6;
+		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = RESET;
 		String highlight = YELLOW;
 		if (choice != null) {
 			switch (choice) {
@@ -272,8 +287,9 @@ public class GuitarRentalApplication {
 			case "e" -> optionE = highlight;
 			case "4" -> option4 = highlight;
 			case "5" -> option5 = highlight;
+			case "6" -> option6 = highlight;
 			default ->
-				option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = RESET;
+				option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = RESET;
 			}
 		}
 
@@ -288,7 +304,8 @@ public class GuitarRentalApplication {
 		System.out.println(option3 + "3. Stream Analytics (min, max, anyMatch, collectors)");
 		System.out.println(optionE + "  e. Stream Management (findFirst, limit)");
 		System.out.println(option4 + "4. Fee Calculation (Switch Pattern Matching)");
-		System.out.println(option5 + "5. Date/Time API (Due Date Calculation)");
+		System.out.println(option5 + "5. NIO.2 File Export");
+		System.out.println(option6 + "6. Date/Time API (Due Date Calculation)");
 		System.out.println(RESET + "x. Exit");
 		System.out.print("Choice: ");
 	}
