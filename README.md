@@ -44,7 +44,7 @@ Demonstrate ability to apply the learning from the module to build a Java applic
 java --enable-preview --source 25 src/main/java/Launcher.java
 ```
 ---
-## Built Wtih
+## Built With
 
 - **JDK**: 25 (with Preview Features enabled)
 - **Build Tool**: Maven 3.9+
@@ -128,3 +128,9 @@ Serial: AG002 | Brand: Peavey   | Model: Bandit       | Price: €299.00
 Serial: AB001 | Brand: Peavey   | Model: TKO          | Price: €479.00
 Serial: PA001 | Brand: Bose     | Model: L1 Compact   | Price: €999.00
 ```
+
+---
+
+## Release
+
+<https://github.com/joeaoregan/TUS-26-OOP2-CA/releases/tag/CA-Submission>
