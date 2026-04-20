@@ -5,9 +5,14 @@
 ![OOP2](https://img.shields.io/badge/Module-Object%20Oriented%20Programming%202-blue?style=flat-square)
 ![OOP](https://img.shields.io/badge/Topic-OOP-blue?style=flat-square)
 
+![Java Version](https://img.shields.io/badge/Java-25%20Preview-red?logo=openjdk&logoColor=white)
+![Build](https://img.shields.io/badge/Build-Maven-blue?logo=apachemaven)
+![Features](https://img.shields.io/badge/Features-JEP%20512%20|%20513%20|%20481-green)
+![Status](https://img.shields.io/badge/Status-Completed-success)
+
 ![GitHub repo size](https://img.shields.io/github/repo-size/joeaoregan/TUS-26-OOP2-CA?style=flat-square\&color=orange)
 ![Last Commit](https://img.shields.io/github/last-commit/joeaoregan/TUS-26-OOP2-CA?style=flat-square\&color=blue)
-![GitHub top language](https://img.shields.io/github/languages/top/joeaoregan/TUS-26-OOP2-CA-26-OOP2-CAE)
+![GitHub top language](https://img.shields.io/github/languages/top/joeaoregan/TUS-26-OOP2-CA)
 ![Stars](https://img.shields.io/github/stars/joeaoregan/TUS-26-OOP2-CA?style=social)
 
 **Student Name**: Joe O'Regan  
@@ -31,6 +36,41 @@ Demonstrate ability to apply the learning from the module to build a Java applic
   - Compact Source Files + Instant Main Methods
   - Flexible Cosntructor Bodies
 
+---
+
+## Quick Run Command
+
+```bash title="Terminal Command"
+java --enable-preview --source 25 src/main/java/Launcher.java
+```
+---
+## Built Wtih
+
+- **JDK**: 25 (with Preview Features enabled)
+- **Build Tool**: Maven 3.9+
+- **IDE**: Spring Tools Suite 4 (Eclipse-based)
+
+---
+
+## Directory Structure
+
+```text title="Directory Structure" 
+├── Launcher.java                 # Entry Point (JEP 512)
+├── pom.xml                       # Maven Configuration
+├── inventory_report.txt          # Sample Output (NIO.2)
+└── src/
+    └── main/
+        └── java/
+            └── com/tus/guitarrental/
+                ├── GuitarRentalApplication.java
+                ├── Logo.java
+                ├── controller/
+                │   └── StoreController.java
+                └── entities/      # Sealed Interfaces & Records
+                    ├── Instrument.java
+                    ├── PremiumGuitar.java
+                    └── ... (other entities)
+```
 ---
 
 ## Guitar Store Management System
@@ -59,7 +99,7 @@ The main objective of this application is to demonstrate proficiency in modern J
 
 ### Concurrency
 
-The application utilizes the Java Concurrency API (via ExecutorService) to demonstrate high-performance asynchronous processing.
+The application uses the Java Concurrency API (via ExecutorService) to demonstrate high-performance asynchronous processing.
 
 - **Logic**: Instead of processing rental returns sequentially (one by one), the system handles them in parallel using a Fixed Thread Pool.
 - **ExecutorService**: Manages a pool of three worker threads, decoupling task submission from execution. This ensures the application remains responsive while "heavy" tasks (simulated item inspections) run in the background.
