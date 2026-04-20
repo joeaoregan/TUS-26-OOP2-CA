@@ -41,9 +41,17 @@ The main objective of this application is to demonstrate proficiency in modern J
 
 ### Entity Class Diagram
 
-![Model Class Diagram](docs/images/ModelClassDiagram.png)
+![Model Class Diagram](docs/images/EntityClassDiagram.png)
 
     Figure 1. Entity Class Diagram
+
+![Amplification Hierarchy](docs/images/AmplificationSubtype.png)
+
+    Figure 2. Amplification Hierarchy
+
+![Records](docs/images/Records.png)
+
+    Figure 3. Records
 
 ---
 

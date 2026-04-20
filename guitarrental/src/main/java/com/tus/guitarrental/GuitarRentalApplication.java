@@ -50,7 +50,8 @@ public class GuitarRentalApplication {
 				case "6" -> GuitarRentalApplication::testConcurrency;
 				case "7" -> GuitarRentalApplication::testLocalisation;
 				case "8" -> GuitarRentalApplication::testDateTime;
-				case "9" -> GuitarRentalApplication::testPremiumRecord;
+				case "9" -> GuitarRentalApplication::testFlexibleConstructorBodies;
+				case "10" -> GuitarRentalApplication::testJava25Extras;
 				case "x" -> {
 					System.out.println(RED + "Goodbye!" + RESET);
 					exit = true;
@@ -278,7 +279,8 @@ public class GuitarRentalApplication {
 	public static void testDateTime() {
 		System.out.println("\nInventory: " + YELLOW + "Date/Time API (Rental Due Date)" + RESET);
 		System.out.println("-----------------------------------------------------");
-		int duration = 7; // Example: 1 week rental
+		// 1. One week rental example using LocalDate and plusDays
+		int duration = 7;
 		String due = controller.calculateDueDate(duration);
 		System.out.println("\nItem Rented Today: "
 				+ LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yy")));
@@ -288,30 +290,31 @@ public class GuitarRentalApplication {
 		System.out.println("\nInventory: " + YELLOW + "Date/Time API (Enhanced Testing)" + RESET);
 		System.out.println("-----------------------------------------------------");
 
-		// 1. Weekly Rental (Demo plusWeeks)
+		// 2. Weekly Rental (Demo plusWeeks)
 		String weekly = controller.calculateLongTermDueDate(2, java.time.temporal.ChronoUnit.WEEKS);
 		System.out.println("2-Week Touring Rental Due:   " + GREEN + weekly + RESET);
 
-		// 2. Monthly Rental (Demo plusMonths)
+		// 3. Monthly Rental (Demo plusMonths)
 		String monthly = controller.calculateLongTermDueDate(1, java.time.temporal.ChronoUnit.MONTHS);
 		System.out.println("1-Month Resident Rental Due: " + GREEN + monthly + RESET);
 
-		// 3. Demonstrating Period (Difference between dates)
+		// 4. Demonstrating Period (Difference between dates)
 		LocalDate start = LocalDate.now();
 		LocalDate end = start.plusMonths(1).plusWeeks(2);
 		java.time.Period period = java.time.Period.between(start, end);
 		System.out.printf("Total Rental Duration: %d months and %d days%n", period.getMonths(), period.getDays());
 
-		// ChronoUnit demo
+		// 5. ChronoUnit for age calculation (e.g. equipment age in days)
 		LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
 		long equipmentAge = controller.getEquipmentAgeInDays(purchaseDate);
 		System.out.println("Random Equipment purchased 01/01/2024 Age (Days): " + equipmentAge);
 
-		// Time zones
+		// 6. Time zones (Demo ZonedDateTime for global system sync)
 		System.out.println(GREEN + "\nGlobal System Sync (Time Zones):" + RESET);
 		ZonedDateTime dublinTime = ZonedDateTime.now(ZoneId.of("Europe/Dublin"));
 		ZonedDateTime nyTime = ZonedDateTime.now(ZoneId.of("America/New_York"));
 
+		// 7. DateTimeFormatter with time zone
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm (z)");
 		System.out.println("Dublin HQ Time:   " + dublinTime.format(timeFormatter));
 		System.out.println("New York Branch:  " + nyTime.format(timeFormatter));
@@ -349,7 +352,7 @@ public class GuitarRentalApplication {
 	    System.out.println("Localised (Spain):   " + LocalDate.now().format(esFormatter));
 	}
 	
-	public static void testPremiumRecord() {
+	public static void testFlexibleConstructorBodies() {
 	    System.out.println("\nInventory: " + YELLOW + "Java 25 Flexible Constructor Demo" + RESET);
 	    System.out.println("-----------------------------------------------------\n");
 	    
@@ -365,6 +368,27 @@ public class GuitarRentalApplication {
 			System.out.println();
 		}
 	}
+	
+	public static void testJava25Extras() {
+	    System.out.println("\nInventory: " + YELLOW + "Java 25 Extra Marks Demo" + RESET);
+	    System.out.println("-----------------------------------------------------");
+
+	    // 1. Demo Stream Gatherers
+	    System.out.println(GREEN + "1. Stream Gatherers (Fixed Window Pairs):" + RESET);
+	    var bundles = controller.getBundleDeals();
+	    bundles.stream().limit(2).forEach(pair -> 
+	        System.out.println("Bundle Deal: " + pair.get(0).model() + " + " + pair.get(1).model()));
+
+	    // 2. Demo Scoped Values
+	    System.out.println(GREEN + "\n2. Scoped Values (Context-Bound Discount):" + RESET);
+	    controller.runDiscountedAudit();
+	    
+	    // 3. Demo Flexible Constructor
+	    System.out.println(GREEN + "\n3. Flexible Constructor (Premium Record):" + RESET);
+	    new com.tus.guitarrental.entities.PremiumGuitar("PR-999", "Gibson", "Custom", 5000.00);
+	    
+//	    System.out.println("\n");
+	}
 
 	public static void invalidChoice() {
 		System.out.println("\nInventory " + RED + "Invalid choice. Please try again." + RESET);
@@ -377,8 +401,8 @@ public class GuitarRentalApplication {
 
 	public static void printOptions(String choice) {
 		String option0, option1, optionA, option2, optionB, optionC, optionD, optionE, option3, option4, option5,
-				option6, option7, option8, option9;
-		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = option9 = RESET;
+				option6, option7, option8, option9, option10;
+		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = option9 = option10 = RESET;
 		String highlight = YELLOW;
 		if (choice != null) {
 			switch (choice) {
@@ -397,8 +421,9 @@ public class GuitarRentalApplication {
 			case "7" -> option7 = highlight;
 			case "8" -> option8 = highlight;
 			case "9" -> option9 = highlight;
+			case "10" -> option10 = highlight;
 			default ->
-				option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = option9 = RESET;
+				option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = option9 = option10 = RESET;
 			}
 		}
 
@@ -418,6 +443,7 @@ public class GuitarRentalApplication {
 		System.out.println(option7 + "7. Localisation (Date/Time Formatting by Locale)");
 		System.out.println(option8 + "8. Date/Time API (Due Date Calculation)");
 		System.out.println(option9 + "9. Java 25 Record Constructor Demo");
+		System.out.println(option10 + "10. Java 25 Extras Demo (Gatherers, Scoped Values, Flexible Constructors)");
 		System.out.println(RESET + "x. Exit");
 		System.out.print("Choice: ");
 	}

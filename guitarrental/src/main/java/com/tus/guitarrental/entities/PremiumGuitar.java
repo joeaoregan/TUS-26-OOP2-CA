@@ -10,6 +10,6 @@ public record PremiumGuitar(String serialNumber, String brand, String model, dou
         }
         
         double insurance = baseRentalPrice * 0.10;
-        System.out.printf("Premium Item %s initialised with €%.2f insurance%n", serialNumber, insurance);
+        System.out.printf("Premium Item %s beginning with €%.2f insurance%n", serialNumber, insurance);
     }
 }
