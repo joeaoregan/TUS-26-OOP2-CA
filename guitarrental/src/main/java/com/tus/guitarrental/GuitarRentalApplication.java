@@ -50,6 +50,7 @@ public class GuitarRentalApplication {
 				case "6" -> GuitarRentalApplication::testConcurrency;
 				case "7" -> GuitarRentalApplication::testLocalisation;
 				case "8" -> GuitarRentalApplication::testDateTime;
+				case "9" -> GuitarRentalApplication::testPremiumRecord;
 				case "x" -> {
 					System.out.println(RED + "Goodbye!" + RESET);
 					exit = true;
@@ -347,6 +348,23 @@ public class GuitarRentalApplication {
 	    DateTimeFormatter esFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", java.util.Locale.of("es", "ES"));
 	    System.out.println("Localised (Spain):   " + LocalDate.now().format(esFormatter));
 	}
+	
+	public static void testPremiumRecord() {
+	    System.out.println("\nInventory: " + YELLOW + "Java 25 Flexible Constructor Demo" + RESET);
+	    System.out.println("-----------------------------------------------------\n");
+	    
+	    // This triggers the logic in the PremiumGuitar compact constructor
+	    var premium = new com.tus.guitarrental.entities.PremiumGuitar(
+	        "PREM1", "PRS", "Custom 24", 4500.00
+	    );
+	    
+	    System.out.println(GREEN + "Premium Record Created: " + premium.brand() + " " + premium.model() + RESET);
+	    System.out.println("Base Price: €" + premium.baseRentalPrice());
+	    
+		for (int i = 0; i < 11; i++) {
+			System.out.println();
+		}
+	}
 
 	public static void invalidChoice() {
 		System.out.println("\nInventory " + RED + "Invalid choice. Please try again." + RESET);
@@ -359,8 +377,8 @@ public class GuitarRentalApplication {
 
 	public static void printOptions(String choice) {
 		String option0, option1, optionA, option2, optionB, optionC, optionD, optionE, option3, option4, option5,
-				option6, option7, option8;
-		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = RESET;
+				option6, option7, option8, option9;
+		option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = option9 = RESET;
 		String highlight = YELLOW;
 		if (choice != null) {
 			switch (choice) {
@@ -378,8 +396,9 @@ public class GuitarRentalApplication {
 			case "6" -> option6 = highlight;
 			case "7" -> option7 = highlight;
 			case "8" -> option8 = highlight;
+			case "9" -> option9 = highlight;
 			default ->
-				option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = RESET;
+				option0 = option1 = optionA = option2 = optionB = optionC = optionD = optionE = option3 = option4 = option5 = option6 = option7 = option8 = option9 = RESET;
 			}
 		}
 
@@ -398,6 +417,7 @@ public class GuitarRentalApplication {
 		System.out.println(option6 + "6. Concurrency (Batch Processing with Threads)");
 		System.out.println(option7 + "7. Localisation (Date/Time Formatting by Locale)");
 		System.out.println(option8 + "8. Date/Time API (Due Date Calculation)");
+		System.out.println(option9 + "9. Java 25 Record Constructor Demo");
 		System.out.println(RESET + "x. Exit");
 		System.out.print("Choice: ");
 	}
