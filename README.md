@@ -79,19 +79,27 @@ The main objective of this application is to demonstrate proficiency in modern J
 
 ---
 
-### Entity Class Diagram
+### Diagrams 
+
+![High-Level Architecture](docs/images/architecture-v2.png)
+
+    Figure 1. High-Level Architecture Diagram
 
 ![Model Class Diagram](docs/images/EntityClassDiagram.png)
 
-    Figure 1. Entity Class Diagram
+    Figure 2. Entity Class Diagram
 
 ![Amplification Hierarchy](docs/images/AmplificationSubtype.png)
 
-    Figure 2. Amplification Hierarchy
+    Figure 3. Amplification Hierarchy
 
 ![Records](docs/images/Records.png)
 
-    Figure 3. Records
+    Figure 4. Records
+
+![Records Overview](docs/images/Records-Overview.png)
+
+    Figure 5. Records Overview
 
 ---
 
