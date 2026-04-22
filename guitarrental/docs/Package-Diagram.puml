@@ -1,0 +1,34 @@
+@startuml
+skinparam PackageBackgroundColor #E3F2FD
+skinparam ClassBackgroundColor #FFFFFF
+
+package "Root (Unnamed Class)" {
+    class Launcher << (J, #FF7700) JEP 512 >> {
+        + void main()
+    }
+}
+
+package "com.tus.guitarrental" {
+    class GuitarRentalApplication {
+        + void start()
+    }
+    
+    package "controller" {
+        class StoreController {
+            -- Logic --
+            + processInventory()
+            + calculateFees()
+        }
+    }
+    
+    package "entities" {
+        interface Instrument <<sealed>>
+        class Guitar <<record>>
+        class PremiumGuitar <<record / JEP 513>>
+    }
+}
+
+Launcher --> GuitarRentalApplication : initializes
+GuitarRentalApplication --> StoreController : delegates logic
+StoreController --> Instrument : manages
+@enduml

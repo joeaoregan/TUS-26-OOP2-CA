@@ -249,6 +249,13 @@ public class GuitarRentalApplication {
 		});
 	}
 
+	/*
+	 * Manage External Assets and Data Files
+	 * 
+	 * As an administrator, I want to export the current store inventory to an external text file 
+	 * using modern I/O practices 
+	 * so that I have a persistent record for stocktaking and reporting. 
+	 */
 	public static void testNioFiles() {
 		System.out.println("\nInventory: " + YELLOW + "NIO.2 File Export" + RESET);
 		System.out.println("-----------------------------------------------------\n");
@@ -264,6 +271,13 @@ public class GuitarRentalApplication {
 		}
 	}
 
+	/*
+	 * Concurrent Batch Rental with Availability Check
+	 * 
+	 * As a manager, 
+	 * I want to process multiple instrument returns and status checks concurrently 
+	 * so that the system remains responsive while handling bulk data updates.
+	 */
 	public static void testConcurrency() {
 		System.out.println("\nInventory: " + YELLOW + "Concurrent Batch Returns" + RESET);
 		System.out.println("-----------------------------------------------------");
@@ -290,7 +304,7 @@ public class GuitarRentalApplication {
 		System.out.println("\nInventory: " + YELLOW + "Date/Time API (Enhanced Testing)" + RESET);
 		System.out.println("-----------------------------------------------------");
 
-		// 2. Weekly Rental (Demo plusWeeks)
+		// 2. Weekly Rental (Demo plusWeeks) - localDate.now(), DateTimeFormatter, ChronoUnit
 		String weekly = controller.calculateLongTermDueDate(2, java.time.temporal.ChronoUnit.WEEKS);
 		System.out.println("2-Week Touring Rental Due:   " + GREEN + weekly + RESET);
 
@@ -304,7 +318,7 @@ public class GuitarRentalApplication {
 		java.time.Period period = java.time.Period.between(start, end);
 		System.out.printf("Total Rental Duration: %d months and %d days%n", period.getMonths(), period.getDays());
 
-		// 5. ChronoUnit for age calculation (e.g. equipment age in days)
+		// 5. ChronoUnit for age calculation (e.g. equipment age in days) - ChronoUnit.DAYS.between()
 		LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
 		long equipmentAge = controller.getEquipmentAgeInDays(purchaseDate);
 		System.out.println("Random Equipment purchased 01/01/2024 Age (Days): " + equipmentAge);
@@ -368,7 +382,7 @@ public class GuitarRentalApplication {
 			System.out.println();
 		}
 	}
-	
+	 
 	public static void testJava25Extras() {
 	    System.out.println("\nInventory: " + YELLOW + "Java 25 Extra Marks Demo" + RESET);
 	    System.out.println("-----------------------------------------------------");

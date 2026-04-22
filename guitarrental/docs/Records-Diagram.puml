@@ -1,0 +1,71 @@
+@startuml 
+skinparam style strictuml 
+title Gear Rental System - Records Overview
+
+class Guitar <<record>> { 
++ serialNumber : String
++ brand : String
++ model : String
++ baseRentalPrice : double
++ numberOfStrings : int
++ isElectric : boolean
+}
+
+class Bass <<record>> { 
++ serialNumber : String
++ brand : String
++ model : String
++ baseRentalPrice : double
++ numberOfStrings : int
++ isFretless : boolean
+}
+
+class Drums <<record>> { 
++ serialNumber : String
++ brand : String
++ model : String
++ baseRentalPrice : double
++ numberOfPieces : int
+}
+
+class GuitarAmplifier <<record>> { 
++ serialNumber : String
++ brand : String
++ model : String
++ baseRentalPrice : double
++ wattage : int
+}
+
+class BassAmplifier <<record>> { 
++ serialNumber : String
++ brand : String
++ model : String
++ baseRentalPrice : double
++ wattage : int
+}
+
+class PublicAddressSystem <<record>> { 
++ serialNumber : String
++ brand : String
++ model : String
++ baseRentalPrice : double
++ wattage : int
+}
+
+class PremiumGuitar <<record>> { 
++ serialNumber : String 
++ brand : String
++ model : String
++ baseRentalPrice : double
+}
+
+class RentalRecord <<record>> { 
++ transactionId : String 
++ instrumentName : String
++ customerName : String
++ rentalDate : LocalDate
++ returnDate : LocalDate
++ fee : double
+}
+
+@enduml

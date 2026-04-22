@@ -33,7 +33,7 @@ import com.tus.guitarrental.entities.PublicAddressSystem;
 public class StoreController {
 
     private final List<Instrument> inventory = new ArrayList<>();
-    public final static ScopedValue<Double> RENTAL_DISCOUNT = ScopedValue.newInstance();
+//    public final static ScopedValue<Double> RENTAL_DISCOUNT = ScopedValue.newInstance();
 
     public StoreController() {
         populateInventory();
@@ -101,10 +101,6 @@ public class StoreController {
         return logic.apply(i.baseRentalPrice());
     }
 
-    public void processInventory(java.util.function.Consumer<Instrument> action) {
-        inventory.forEach(action);
-    }
-
     /**
      * Fundamentals: Lambdas (Consumer, Supplier)
      */
@@ -115,6 +111,10 @@ public class StoreController {
         } else {
             inventory.forEach(action); // Use Consumer for existing items
         }
+    }
+
+    public void processInventory(java.util.function.Consumer<Instrument> action) {
+        inventory.forEach(action);
     }
 
     /**
@@ -154,12 +154,12 @@ public class StoreController {
 
     // 1. findFirst: Find the first item of a specific brand
     public Optional<Instrument> getFirstByBrand(String brand) {
-        return inventory.stream().filter(i -> i.brand().equalsIgnoreCase(brand)).findFirst();
+        return inventory.stream().filter(i -> i.brand().equalsIgnoreCase(brand)).findFirst(); // find first by brand
     }
 
     // 2. findAny: Get any item under a certain budget (efficient for large lists)
     public Optional<Instrument> getAnyBudgetOption(double limit) {
-        return inventory.stream().filter(i -> i.baseRentalPrice() < limit).findAny();
+        return inventory.stream().filter(i -> i.baseRentalPrice() < limit).findAny(); // Find any item under limit
     }
 
     // 3. allMatch: Verification logic (e.g., check if all stock has serial numbers)
@@ -167,17 +167,17 @@ public class StoreController {
         return inventory.stream().allMatch(i -> i.serialNumber() != null && !i.serialNumber().isBlank());
     }
 
-    // 4. toMap: Create a Price List with a 20% Discount
+    // 4. noneMatch: Check if there are no free rental items (price <= 0)
+    public boolean hasNoFreeRentalItems() {
+        // Returns true if NO instruments have a base rental price of 0
+        return inventory.stream().noneMatch(i -> i.baseRentalPrice() <= 0.0);
+    }
+
+    // 5. toMap: Create a Price List with a 20% Discount
     public Map<String, Double> getDiscountedPriceMap() {
         return inventory.stream().collect(Collectors.toMap(Instrument::serialNumber, // Key: Serial Number
                 i -> i.baseRentalPrice() * 0.8 // Value: Price with 20% discount
         ));
-    }
-
-    // 5. noneMatch: Check if there are no free rental items (price <= 0)
-    public boolean hasNoFreeRentalItems() {
-        // Returns true if NO instruments have a base rental price of 0
-        return inventory.stream().noneMatch(i -> i.baseRentalPrice() <= 0.0);
     }
 
     /**
@@ -229,7 +229,7 @@ public class StoreController {
      */
     public void processBatchReturns(List<String> serialsToReturn) {
         // Create a thread pool with 3 threads
-        ExecutorService executor = Executors.newFixedThreadPool(3);
+        ExecutorService executor = Executors.newFixedThreadPool(3); // Fixed Thread Pool
 
         for (String serial : serialsToReturn) {
             executor.submit(() -> {
@@ -305,6 +305,8 @@ public class StoreController {
         return inventory.stream().gather(Gatherers.windowFixed(2)).toList();
     }
 
+    public final static ScopedValue<Double> RENTAL_DISCOUNT = ScopedValue.newInstance(); // moved for screencast visibility
+    
     /**
      * Extra Marks: Java 25 Scoped Values (JEP 481)
      */
@@ -314,6 +316,7 @@ public class StoreController {
             System.out.println("Current Scoped Discount Level: " + RENTAL_DISCOUNT.get());
             System.out.println("Instrument     |  Member Price  |   Original Price");
             System.out.println("-----------------------------------------------------");
+            
             inventory.stream().limit(3)
                     .forEach(i -> System.out.printf(
                     "%-14s |       €%7.2f |            €%7.2f%n", i.model(),
